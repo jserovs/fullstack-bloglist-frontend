@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
-import LoginButton from './components/LoginButton'
+import Button from './components/LoginButton'
+import MessageBox from './components/MessageBox'
 import blogService from './services/blogs'
 import userService from './services/users'
 
@@ -15,11 +16,15 @@ const App = () => {
     )
   }, [])
 
-  const [user, setUser] = useState(null)
+  // userThat is logged in
+  const [user, setUser] = useState(window.localStorage.getItem('name'))
+  // token for user
+  const [loginToken, setLoginToken] = useState(window.localStorage.getItem('token'))
 
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
-  const [loginToken, setLoginToken] = useState('')
+
+  const [message, setMessage] = useState('')
 
   const handleUserNameChange = (event) => {
     setUserName(event.target.value)
@@ -34,21 +39,37 @@ const App = () => {
 
     userService.postLogin(userName, password)
       .then(result => {
-        console.log(JSON.stringify(result))
         setUser(result.name)
         setLoginToken(result.token)
-
+        window.localStorage.setItem('name', result.name)
+        window.localStorage.setItem('user', result.username)
+        window.localStorage.setItem('token', result.token)
       })
       .catch(error => {
         console.log(error)
+        setMessage('Wrong credentials')
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       })
+
+  }
+
+  const logoutButtonClicked = (event) => {
+    event.preventDefault()
+
+    setUser(null)
+    setLoginToken()
+    window.localStorage.clear()
 
   }
 
   if (user === null) {
     return (
       <div>
+        <h1>blogs</h1>
         <h2>Log in to application</h2>
+        <MessageBox text={message}/>
         <form>
           <div>
             username: <input type='text' value={userName} onChange={handleUserNameChange} />
@@ -57,7 +78,7 @@ const App = () => {
             password: <input type='password' value={password} onChange={handlePasswordChange} />
           </div>
           <div>
-            <LoginButton text='Login' handleClick={loginButtonClicked} />
+            <Button text='Login' handleClick={loginButtonClicked} />
           </div>
         </form>
       </div>
@@ -66,12 +87,10 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
-      <h3>you are logged as {user}</h3>
+      <h1>blogs</h1>
+      <div>{user} is logged!!! <Button text='logout' handleClick={logoutButtonClicked} /></div>
+
       {blogs.map(blog => {
-        console.log (JSON.stringify(blog))
-        console.log ("current blog entry name: " + blog.user.name)
-        console.log ("current user: " + user)
         if (blog.user.name === user) {
           return <Blog key={blog.id} blog={blog} user={user} />
         }
