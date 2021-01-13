@@ -1,9 +1,10 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react'
 import Button from './Button'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
-// eslint-disable-next-line no-unused-vars
+
+
 const NewBlogForm = ({ setMessage, setBlogs, blogs, loginToken, setBlogAddForm }) => {
 
   const [title, setTitle] = useState('')
@@ -74,6 +75,15 @@ const NewBlogForm = ({ setMessage, setBlogs, blogs, loginToken, setBlogAddForm }
     </form>
   )
 
+}
+
+
+NewBlogForm.propTypes = {
+  setMessage: PropTypes.func.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+  blogs: PropTypes.array.isRequired,
+  loginToken: PropTypes.string.isRequired,
+  setBlogAddForm: PropTypes.string.isRequired
 }
 
 export default NewBlogForm

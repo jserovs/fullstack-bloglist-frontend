@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/display-name */
 import React, { useState, useImperativeHandle } from 'react'
 
 const Togglable = React.forwardRef((props, ref) => {
@@ -30,5 +28,7 @@ const Togglable = React.forwardRef((props, ref) => {
     </div>
   )
 })
+
+Togglable.displayName = 'Togglable'
 
 export default Togglable
