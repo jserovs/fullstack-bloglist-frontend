@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import Togglable from './Togglable'
 import blogService from '../services/blogs'
+
 
 
 const Blog = ({ blog, loginToken, blogs }) => {
@@ -48,4 +50,5 @@ const Blog = ({ blog, loginToken, blogs }) => {
   )
 
 }
+
 export default Blog

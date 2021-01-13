@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useImperativeHandle } from 'react'
 
 const Togglable = React.forwardRef((props, ref) => {
