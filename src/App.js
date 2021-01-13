@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Button from './components/Button'
 import MessageBox from './components/MessageBox'
@@ -7,8 +7,12 @@ import NewBlogForm from './components/NewBlogForm'
 import blogService from './services/blogs'
 import userService from './services/users'
 
+
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
+
+  
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -102,11 +106,13 @@ const App = () => {
   const blogList = () => {
     return (
       <div>
-        <Button text='add blog' handleClick={addBlogClicked} />
-        {blogAddForm && <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs} loginToken={loginToken} setBlogAddForm={setBlogAddForm}/>}        
+        {!blogAddForm && <Button text='add blog' handleClick={addBlogClicked} />}
+        {blogAddForm && <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs} loginToken={loginToken} setBlogAddForm={setBlogAddForm} />}        
         {blogs.map(blog => {
           if (blog.user.name === user) {
-            return <Blog key={blog.id} blog={blog} user={user} />
+            return (
+                <Blog key={blog.id} blog={blog} user={user}/>
+            )
           }
         }
         )}
@@ -121,7 +127,6 @@ const App = () => {
 
       <h1>blogs</h1>
       <MessageBox message={message} />
-
       {user === null ?
         loginForm() :
         <div>{user} is logged!!! <Button text='logout' handleClick={logoutButtonClicked} /></div>
