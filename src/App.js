@@ -12,6 +12,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
 
 
+  useEffect
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -103,11 +104,16 @@ const App = () => {
   }
 
   const blogList = () => {
+
     return (
       <div>
         {!blogAddForm && <Button text='add blog' handleClick={addBlogClicked} />}
         {blogAddForm && <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs} loginToken={loginToken} setBlogAddForm={setBlogAddForm} />}
-        {blogs.map(blog => { if (blog.user.name === user) { return (<Blog key={blog.id} blog={blog} loginToken={loginToken} blogs={blogs} setBlogs={setBlogs}/>) } }
+        {blogs.sort((a,b) => { return a.likes - b.likes }).map(blog => {
+          if (blog.user.name === user) {
+            return (<Blog key={blog.id} blog={blog} loginToken={loginToken} blogs={blogs} setBlogs={setBlogs} />)
+          }
+        }
         )}
       </div>
     )
