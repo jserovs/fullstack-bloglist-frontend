@@ -21,7 +21,6 @@ const NewBlogForm = (props) => {
         var newBlog = {};
         blogService.saveBlog(title, author, url, props.loginToken)
             .then((result) => {
-                console.log("result.data= " + JSON.stringify(result))
                 newBlog = {
                     title: result.title,
                     author: result.author,
@@ -32,22 +31,30 @@ const NewBlogForm = (props) => {
                         id: result.user
                     }
                 }
-                console.log("newBlog" + JSON.stringify(newBlog));
+
                 let copy = [...props.blogs]
                 copy.push(newBlog)
-                console.log("COPY array" + JSON.stringify(copy))
                 props.setBlogs(copy)
-                console.log("BLOGS array" + JSON.stringify(props.blogs))
+                props.setMessage({ text: 'BLOG: ' + result.title + ' by ' + result.author + ' added sucesfully!', style: 'notification' })
+                setTimeout(() => {
+                    props.setMessage({ text: null, style: 'notification' })
+                }, 5000)
+            })
+
+            .catch(error => {
+                console.log(error)
+                props.setMessage({ text: 'Wrong credentials', style: 'error' })
+                setTimeout(() => {
+                    props.setMessage({ text: null, style: '' })
+                }, 5000)
             })
 
         setAuthor('')
         setTitle('')
         setUrl('')
 
-        props.setMessage('pressed the button')
-        setTimeout(() => {
-            props.setMessage(null)
-        }, 5000)
+
+
     }
 
     return (

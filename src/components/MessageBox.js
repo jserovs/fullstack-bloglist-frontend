@@ -2,8 +2,8 @@
 import React from 'react'
 
 const MessageBox = (props) => (
-    <div>
-        <b>{props.text}</b>
+    <div className={props.message.style}>
+        <b>{props.message.text}</b>
     </div>
 )
 

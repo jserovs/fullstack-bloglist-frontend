@@ -35,7 +35,7 @@ const App = () => {
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
 
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState({ text: null, style: '' })
 
   const handleUserNameChange = (event) => {
     setUserName(event.target.value)
@@ -52,13 +52,13 @@ const App = () => {
       .then(result => {
         setUser(result.name)
         setLoginToken(result.token)
-        window.localStorage.setItem('BlogUser', JSON.stringify({username: userName, name: result.name, token: result.token}))
+        window.localStorage.setItem('BlogUser', JSON.stringify({ username: userName, name: result.name, token: result.token }))
       })
       .catch(error => {
         console.log(error)
-        setMessage('Wrong credentials')
+        setMessage({ text: 'Wrong credentials', style: 'error' })
         setTimeout(() => {
-          setMessage(null)
+          setMessage({ text: null, style: '' })
         }, 5000)
       })
 
@@ -73,11 +73,10 @@ const App = () => {
 
   }
 
-  if (user === null) {
+  const loginForm = () => {
     return (
       <div>
-        <h1>blogs</h1>
-        <h2>Log in to application</h2>        
+        <h2>Log in to application</h2>
         <form>
           <div>
             username: <input type='text' value={userName} onChange={handleUserNameChange} />
@@ -93,19 +92,33 @@ const App = () => {
     )
   }
 
+  const blogList = () => {
+    return (
+      <div>
+        <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs} loginToken={loginToken} />
+        {blogs.map(blog => {
+          if (blog.user.name === user) {
+            return <Blog key={blog.id} blog={blog} user={user} />
+          }
+        }
+        )}
+      </div>
+    )
+  }
+
   return (
     <div>
-      <MessageBox text={message}/>
-      <h1>blogs</h1>
-      <div>{user} is logged!!! <Button text='logout' handleClick={logoutButtonClicked} /></div>
 
-      <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs} loginToken={loginToken}/>
-      {blogs.map(blog => {
-        if (blog.user.name === user) {
-          return <Blog key={blog.id} blog={blog} user={user} />
-        }
+      <h1>blogs</h1>
+      <MessageBox message={message} />
+
+      {user === null ?
+        loginForm() :
+        <div>{user} is logged!!! <Button text='logout' handleClick={logoutButtonClicked} /></div>
       }
-      )}
+
+      {user !== null && blogList()}
+
     </div>
   )
 }
