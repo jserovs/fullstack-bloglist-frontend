@@ -18,9 +18,10 @@ const Blog = ({ blog }) => {
       <Togglable buttonLabel='show details' ref={ref}>
         <div>
           <div>{blog.url}</div>
-          <div>likes: {blog.likes}</div>
+          <div>likes: {blog.likes} <button>like</button></div>
           <div>{blog.author}</div>
         </div>
+        
         
       </Togglable>
 
