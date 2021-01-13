@@ -4,7 +4,7 @@ import Button from './Button'
 import blogService from '../services/blogs'
 
 // eslint-disable-next-line no-unused-vars
-const NewBlogForm = (props) => {
+const NewBlogForm = ({setMessage, setBlogs, blogs, loginToken, setBlogAddForm}) => {
 
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
@@ -19,7 +19,7 @@ const NewBlogForm = (props) => {
             var blogUser = JSON.parse(loggedUserJSON)
         }
         var newBlog = {};
-        blogService.saveBlog(title, author, url, props.loginToken)
+        blogService.saveBlog(title, author, url, loginToken)
             .then((result) => {
                 newBlog = {
                     title: result.title,
@@ -32,20 +32,21 @@ const NewBlogForm = (props) => {
                     }
                 }
 
-                let copy = [...props.blogs]
+                let copy = [...blogs]
                 copy.push(newBlog)
-                props.setBlogs(copy)
-                props.setMessage({ text: 'BLOG: ' + result.title + ' by ' + result.author + ' added sucesfully!', style: 'notification' })
+                setBlogs(copy)
+                setMessage({ text: 'BLOG: ' + result.title + ' by ' + result.author + ' added sucesfully!', style: 'notification' })
                 setTimeout(() => {
-                    props.setMessage({ text: null, style: 'notification' })
+                    setMessage({ text: null, style: '' })
                 }, 5000)
+                setBlogAddForm(false)
             })
 
             .catch(error => {
                 console.log(error)
-                props.setMessage({ text: 'Wrong credentials', style: 'error' })
+                setMessage({ text: 'Wrong credentials', style: 'error' })
                 setTimeout(() => {
-                    props.setMessage({ text: null, style: '' })
+                    setMessage({ text: null, style: '' })
                 }, 5000)
             })
 
@@ -69,6 +70,7 @@ const NewBlogForm = (props) => {
                 url:<input name="url" type="text" value={url || ''} onChange={e => setUrl(e.target.value)} />
             </div>
             <Button text='save' handleClick={newBlogSave} />
+            <Button text='cancel' handleClick={() => setBlogAddForm(false)} />
         </form>
     );
 

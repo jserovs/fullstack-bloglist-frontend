@@ -34,6 +34,7 @@ const App = () => {
 
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
+  const [blogAddForm, setBlogAddForm] = useState(false)
 
   const [message, setMessage] = useState({ text: null, style: '' })
 
@@ -73,6 +74,12 @@ const App = () => {
 
   }
 
+  const addBlogClicked = (event) => {
+    event.preventDefault()
+
+    setBlogAddForm(true)
+  }
+
   const loginForm = () => {
     return (
       <div>
@@ -95,7 +102,8 @@ const App = () => {
   const blogList = () => {
     return (
       <div>
-        <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs} loginToken={loginToken} />
+        <Button text='add blog' handleClick={addBlogClicked} />
+        {blogAddForm && <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs} loginToken={loginToken} setBlogAddForm={setBlogAddForm}/>}        
         {blogs.map(blog => {
           if (blog.user.name === user) {
             return <Blog key={blog.id} blog={blog} user={user} />
@@ -105,6 +113,8 @@ const App = () => {
       </div>
     )
   }
+
+  
 
   return (
     <div>
