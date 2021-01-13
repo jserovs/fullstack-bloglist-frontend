@@ -23,9 +23,11 @@ const NewBlogForm = ({ setMessage, setBlogs, blogs, loginToken, setBlogAddForm }
     blogService.saveBlog(title, author, url, loginToken)
       .then((result) => {
         newBlog = {
+          id: result.id,
           title: result.title,
           author: result.author,
           url: result.url,
+          likes: 0,
           user: {
             username: blogUser.username,
             name: blogUser.name,
@@ -83,7 +85,7 @@ NewBlogForm.propTypes = {
   setBlogs: PropTypes.func.isRequired,
   blogs: PropTypes.array.isRequired,
   loginToken: PropTypes.string.isRequired,
-  setBlogAddForm: PropTypes.string.isRequired
+  setBlogAddForm: PropTypes.func.isRequired
 }
 
 export default NewBlogForm

@@ -109,7 +109,7 @@ const App = () => {
       <div>
         {!blogAddForm && <Button text='add blog' handleClick={addBlogClicked} />}
         {blogAddForm && <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs} loginToken={loginToken} setBlogAddForm={setBlogAddForm} />}
-        {blogs.sort((a,b) => { return a.likes - b.likes }).map(blog => {
+        {blogs.sort((a,b) => { return b.likes - a.likes }).map(blog => {
           if (blog.user.name === user) {
             return (<Blog key={blog.id} blog={blog} loginToken={loginToken} blogs={blogs} setBlogs={setBlogs} />)
           }
