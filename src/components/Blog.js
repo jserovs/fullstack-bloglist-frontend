@@ -4,8 +4,7 @@ import Togglable from './Togglable'
 import blogService from '../services/blogs'
 
 
-
-const Blog = ({ blog, loginToken, blogs }) => {
+const Blog = ({ blog, loginToken, blogs, setBlogs }) => {
 
   const blogStyle = {
     paddingTop: 10,
@@ -20,14 +19,11 @@ const Blog = ({ blog, loginToken, blogs }) => {
   const likeBlog = () => {
     console.log('I like this blog')
     blogService.likeBlog(blog, 1, loginToken)
-    blog.likes = blog.likes+1
-
-    const copy = [...blogs]
-
-    console.log(JSON.stringify(copy))
-
-
-
+      .then(() => {
+        const copy = [...blogs]
+        copy[copy.findIndex((element) => element.id === blog.id)].likes++
+        setBlogs(copy)
+      })
   }
 
   const deleteBlog = () => {
