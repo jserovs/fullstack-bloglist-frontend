@@ -12,11 +12,11 @@ const postLogin = (username, password) => {
     console.log('username: ' + username)
     console.log('password: ' + password)
 
-    const postCall = axios.post(loginAPI, {
+    const request = axios.post(loginAPI, {
         username: username,
         password: password
       })
-    return postCall.then(response => response.data)
+    return request.then(response => response.data)
   }
 
 export default { getAll, postLogin }

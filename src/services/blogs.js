@@ -6,8 +6,8 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
-const saveBlog = async (title, author, url, userToken) => {
-  const response = await axios.post(baseUrl, {
+const saveBlog = (title, author, url, userToken) => {
+  const request = axios.post(baseUrl, {
     title: title,
     author: author,
     url: url
@@ -17,7 +17,24 @@ const saveBlog = async (title, author, url, userToken) => {
     }
   })
 
-  return response.data
+  return request.then(response => response.data)
 }
 
-export default { getAll, saveBlog }
+const likeBlog = (blog, like, userToken) => {
+
+  console.log('blog:' + blog)
+  console.log('userToken:' + userToken)
+
+  const request = axios.put(baseUrl + '/'+blog.id,
+    { likes: blog.likes + like },
+    {
+      headers: {
+        'Authorization': 'Bearer ' + userToken
+      }
+    })
+
+    return request.then(response => response.data)
+
+}
+
+export default { getAll, saveBlog, likeBlog }

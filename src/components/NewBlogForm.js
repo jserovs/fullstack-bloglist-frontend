@@ -44,7 +44,7 @@ const NewBlogForm = ({setMessage, setBlogs, blogs, loginToken, setBlogAddForm}) 
 
             .catch(error => {
                 console.log(error)
-                setMessage({ text: 'Wrong credentials', style: 'error' })
+                setMessage({ text: 'blog could not be added', style: 'error' })
                 setTimeout(() => {
                     setMessage({ text: null, style: '' })
                 }, 5000)
