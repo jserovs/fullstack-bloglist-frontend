@@ -15,12 +15,7 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
-  // eslint-disable-next-line no-unused-vars
-  const [showDetails, setShowDetails] = useState(false)
-
   const ref = React.createRef();
-
-
 
   const likeBlog = () => {
     console.log('I like this blog')
@@ -34,18 +29,15 @@ const Blog = ({ blog }) => {
   return (
     <div id={blog.id} style={blogStyle}>
       <b>{blog.title}</b>
-      {!showDetails && <div><button onClick={() => setShowDetails(true)}>showDetails</button></div>}
-      {showDetails &&
-
+      <Togglable buttonLabel='show details' ref={ref}>
         <div>
-          <button onClick={() => setShowDetails(false)}>hideDetails</button>
           <div>{blog.url}</div>
           <div>likes: {blog.likes} <button onClick={likeBlog}>like</button></div>
           <div>{blog.author}</div>
           <div><button onClick={deleteBlog}>remove</button></div>
         </div>
-      }
-    </div >
+      </Togglable>
+      </div>
   )
 
 }
