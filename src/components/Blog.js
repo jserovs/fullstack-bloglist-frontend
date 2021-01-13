@@ -20,6 +20,8 @@ const Blog = ({ blog }) => {
 
   const ref=React.createRef();
 
+
+
   const likeBlog = () => {
     console.log('I like this blog')
   }
@@ -39,8 +41,6 @@ const Blog = ({ blog }) => {
           <div>{blog.author}</div>
           <div><button onClick={deleteBlog}>remove</button></div>
         </div>
-        
-        
       </Togglable>
 
     </div>
