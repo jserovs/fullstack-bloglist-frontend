@@ -33,7 +33,7 @@ const likeBlog = (blog, like, userToken) => {
       }
     })
 
-    return request.then(response => response.data)
+  return request.then(response => response.data)
 
 }
 

@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState, useRef } from 'react'
-import Button from './Button'
+import React from 'react'
 import Togglable from './Togglable'
+import blogService from '../services/blogs'
 
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, loginToken, blogs }) => {
 
   const blogStyle = {
     paddingTop: 10,
@@ -15,10 +14,19 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
-  const ref = React.createRef();
+  const ref = React.createRef()
 
   const likeBlog = () => {
     console.log('I like this blog')
+    blogService.likeBlog(blog, 1, loginToken)
+    blog.likes = blog.likes+1
+
+    const copy = [...blogs]
+
+    console.log(JSON.stringify(copy))
+
+
+
   }
 
   const deleteBlog = () => {
@@ -37,7 +45,7 @@ const Blog = ({ blog }) => {
           <div><button onClick={deleteBlog}>remove</button></div>
         </div>
       </Togglable>
-      </div>
+    </div>
   )
 
 }

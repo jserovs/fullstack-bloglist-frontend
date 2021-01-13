@@ -12,11 +12,11 @@ import userService from './services/users'
 const App = () => {
   const [blogs, setBlogs] = useState([])
 
-  
+
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
-      setBlogs(blogs);
+      setBlogs(blogs)
     }
     )
   }, [])
@@ -107,20 +107,14 @@ const App = () => {
     return (
       <div>
         {!blogAddForm && <Button text='add blog' handleClick={addBlogClicked} />}
-        {blogAddForm && <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs} loginToken={loginToken} setBlogAddForm={setBlogAddForm} />}        
-        {blogs.map(blog => {
-          if (blog.user.name === user) {
-            return (
-                <Blog key={blog.id} blog={blog} user={user}/>
-            )
-          }
-        }
+        {blogAddForm && <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs} loginToken={loginToken} setBlogAddForm={setBlogAddForm} />}
+        {blogs.map(blog => { if (blog.user.name === user) { return (<Blog key={blog.id} blog={blog} loginToken={loginToken} />) } }
         )}
       </div>
     )
   }
 
-  
+
 
   return (
     <div>
