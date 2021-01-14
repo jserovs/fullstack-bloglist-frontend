@@ -14,6 +14,10 @@ const Blog = ({ blog, loginToken, blogs, setBlogs }) => {
     marginBottom: 5
   }
 
+  const blogTitle = {
+    fontWeight: 'bold'
+  }
+
   const ref = React.createRef()
 
   const likeBlog = () => {
@@ -41,14 +45,13 @@ const Blog = ({ blog, loginToken, blogs, setBlogs }) => {
 
   return (
     <div id={blog.id} style={blogStyle}>
-      <b>{blog.title}</b>
+      <div className='blogTitle' style={blogTitle}>{blog.title}</div>
+      <div className='blogAuthor'>{blog.author}</div>
+
       <Togglable buttonLabel='show details' ref={ref}>
-        <div>
-          <div>{blog.url}</div>
-          <div>likes: {blog.likes} <button onClick={likeBlog}>like</button></div>
-          <div>{blog.author}</div>
-          <div><button onClick={deleteBlog}>remove</button></div>
-        </div>
+        <div className='blogUrl'>{blog.url}</div>
+        <div className='blogLikes'>likes: {blog.likes} <button onClick={likeBlog}>like</button></div>
+        <div><button onClick={deleteBlog}>remove</button></div>
       </Togglable>
     </div>
   )
