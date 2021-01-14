@@ -22,9 +22,6 @@ const saveBlog = (title, author, url, userToken) => {
 
 const likeBlog = (blog, like, userToken) => {
 
-  console.log('blog:' + blog)
-  console.log('userToken:' + userToken)
-
   const request = axios.put(baseUrl + '/'+blog.id,
     { likes: blog.likes + like },
     {

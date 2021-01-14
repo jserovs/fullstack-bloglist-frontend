@@ -14,9 +14,9 @@
 [x] 5.12
 
 [x] 5.13
-[ ] 5.14
-[ ] 5.15
-[ ] 5.16
+[x] 5.14
+[x] 5.15 / like button clicked twice / expected to get elements / refactored Blog component
+[x] 5.16 / new blog form / refactored NewBlogForm component
 [ ] 5.17
 [ ] 5.18
 [ ] 5.19

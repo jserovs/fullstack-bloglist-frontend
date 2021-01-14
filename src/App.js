@@ -50,6 +50,26 @@ const App = () => {
     setPassword(event.target.value)
   }
 
+  const likeBlog = (blog) => {
+    blogService.likeBlog(blog, 1, loginToken)
+      .then((postCall) => {
+        console.log(JSON.stringify(postCall))
+        const copy = [...blogs]
+        copy[copy.findIndex((element) => element.id === blog.id)].likes++
+        setBlogs(copy)
+      })
+  }
+
+  const deleteBlog = (blog) => {
+    blogService.deleteBlog(blog, loginToken)
+      .then((deleteCall) => {
+        console.log(JSON.stringify(deleteCall))
+        const copy = [...blogs]
+        copy.splice(copy.findIndex((element) => element.id === blog.id), 1)
+        setBlogs(copy)
+      })
+  }
+
   const loginButtonClicked = (event) => {
     event.preventDefault()
 
@@ -84,6 +104,50 @@ const App = () => {
     setBlogAddForm(true)
   }
 
+  const createBlog = (newBlog) => {
+
+    console.log('createBlog: '+ newBlog)
+
+    const loggedUserJSON = window.localStorage.getItem('BlogUser')
+    if (loggedUserJSON) {
+
+      var blogUser = JSON.parse(loggedUserJSON)
+    }
+
+    blogService.saveBlog(newBlog.title, newBlog.author, newBlog.url, loginToken)
+      .then((result) => {
+        newBlog = {
+          id: result.id,
+          title: result.title,
+          author: result.author,
+          url: result.url,
+          likes: 0,
+          user: {
+            username: blogUser.username,
+            name: blogUser.name,
+            id: result.user
+          }
+        }
+
+        let copy = [...blogs]
+        copy.push(newBlog)
+        setBlogs(copy)
+        setMessage({ text: 'BLOG: ' + result.title + ' by ' + result.author + ' added sucesfully!', style: 'notification' })
+        setTimeout(() => {
+          setMessage({ text: null, style: '' })
+        }, 5000)
+        setBlogAddForm(false)
+      })
+
+      .catch(error => {
+        console.log(error)
+        setMessage({ text: 'blog could not be added', style: 'error' })
+        setTimeout(() => {
+          setMessage({ text: null, style: '' })
+        }, 5000)
+      })
+  }
+
   const loginForm = () => {
     return (
       <div>
@@ -108,10 +172,10 @@ const App = () => {
     return (
       <div>
         {!blogAddForm && <Button text='add blog' handleClick={addBlogClicked} />}
-        {blogAddForm && <NewBlogForm setMessage={setMessage} setBlogs={setBlogs} blogs={blogs} loginToken={loginToken} setBlogAddForm={setBlogAddForm} />}
+        {blogAddForm && <NewBlogForm createBlog={createBlog} setBlogAddForm={setBlogAddForm} />}
         {blogs.sort((a,b) => { return b.likes - a.likes }).map(blog => {
           if (blog.user.name === user) {
-            return (<Blog key={blog.id} blog={blog} loginToken={loginToken} blogs={blogs} setBlogs={setBlogs} />)
+            return (<Blog key={blog.id} blog={blog} likeBlog={() => likeBlog(blog)} deleteBlog={() => deleteBlog(blog)} />)
           }
         }
         )}

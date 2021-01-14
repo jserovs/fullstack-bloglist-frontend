@@ -1,76 +1,41 @@
 import React, { useState } from 'react'
 import Button from './Button'
-import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
 
 
-const NewBlogForm = ({ setMessage, setBlogs, blogs, loginToken, setBlogAddForm }) => {
+const NewBlogForm = ({ createBlog, setBlogAddForm }) => {
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
+
   const newBlogSave = (event) => {
     event.preventDefault()
+    createBlog({
+      title: title,
+      author: author,
+      url: url
+    })
 
-    const loggedUserJSON = window.localStorage.getItem('BlogUser')
-    if (loggedUserJSON) {
-
-      var blogUser = JSON.parse(loggedUserJSON)
-    }
-    var newBlog = {}
-    blogService.saveBlog(title, author, url, loginToken)
-      .then((result) => {
-        newBlog = {
-          id: result.id,
-          title: result.title,
-          author: result.author,
-          url: result.url,
-          likes: 0,
-          user: {
-            username: blogUser.username,
-            name: blogUser.name,
-            id: result.user
-          }
-        }
-
-        let copy = [...blogs]
-        copy.push(newBlog)
-        setBlogs(copy)
-        setMessage({ text: 'BLOG: ' + result.title + ' by ' + result.author + ' added sucesfully!', style: 'notification' })
-        setTimeout(() => {
-          setMessage({ text: null, style: '' })
-        }, 5000)
-        setBlogAddForm(false)
-      })
-
-      .catch(error => {
-        console.log(error)
-        setMessage({ text: 'blog could not be added', style: 'error' })
-        setTimeout(() => {
-          setMessage({ text: null, style: '' })
-        }, 5000)
-      })
-
+    // resetting inputs to empty
     setAuthor('')
     setTitle('')
     setUrl('')
-
-
 
   }
 
   return (
     <form>
-      <div>
-                title:<input name="title" type="text" value={title || ''} onChange={e => setTitle(e.target.value)} />
+      <div className="titleInput">
+        title:<input id='title' name="title" type="text" value={title || ''} onChange={e => setTitle(e.target.value)} />
       </div>
-      <div>
-                author:<input name="author" type="text" value={author || ''} onChange={e => setAuthor(e.target.value)} />
+      <div className="authorInput">
+        author:<input id='author' name="author" type="text" value={author || ''} onChange={e => setAuthor(e.target.value)} />
       </div>
-      <div>
-                url:<input name="url" type="text" value={url || ''} onChange={e => setUrl(e.target.value)} />
+      <div className="urlInput">
+        url:<input id='url' name="url" type="text" value={url || ''} onChange={e => setUrl(e.target.value)} />
       </div>
       <Button text='save' handleClick={newBlogSave} />
       <Button text='cancel' handleClick={() => setBlogAddForm(false)} />
@@ -79,12 +44,8 @@ const NewBlogForm = ({ setMessage, setBlogs, blogs, loginToken, setBlogAddForm }
 
 }
 
-
 NewBlogForm.propTypes = {
-  setMessage: PropTypes.func.isRequired,
-  setBlogs: PropTypes.func.isRequired,
-  blogs: PropTypes.array.isRequired,
-  loginToken: PropTypes.string.isRequired,
+  createBlog: PropTypes.func.isRequired,
   setBlogAddForm: PropTypes.func.isRequired
 }
 
