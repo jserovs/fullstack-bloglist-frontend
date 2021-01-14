@@ -21,11 +21,11 @@ test('test add blog', async () => {
                 { value: 'as an unitTest I write  blogs' }
     })
 
-    fireEvent.change(authorInput,
-        {
-          target:
+  fireEvent.change(authorInput,
+    {
+      target:
                     { value: 'JEST' }
-        })
+    })
 
   const saveButton = component.getByText('save')
   fireEvent.click(saveButton)

@@ -5,6 +5,15 @@
 /.pnp
 .pnp.js
 
+#cypress
+!/cypress
+/cypress/*
+!/cypress/integration
+/cypress/integration/*
+!/cypress/integration/fullstack
+
+
+
 # testing
 /coverage
 

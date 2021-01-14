@@ -154,10 +154,10 @@ const App = () => {
         <h2>Log in to application</h2>
         <form>
           <div>
-            username: <input type='text' value={userName} onChange={handleUserNameChange} />
+            username: <input id='username' type='text' value={userName} onChange={handleUserNameChange} />
           </div>
           <div>
-            password: <input type='password' value={password} onChange={handlePasswordChange} />
+            password: <input id= 'password' type='password' value={password} onChange={handlePasswordChange} />
           </div>
           <div>
             <Button text='Login' handleClick={loginButtonClicked} />
