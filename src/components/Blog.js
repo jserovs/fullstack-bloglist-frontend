@@ -21,7 +21,7 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
 
 
   return (
-    <div id={blog.id} style={blogStyle}>
+    <div className='blogEntry' id={blog.id} style={blogStyle}>
       <div className='blogTitle' style={blogTitle}>{blog.title}</div>
       <div className='blogAuthor'>{blog.author}</div>
 

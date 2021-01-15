@@ -106,8 +106,6 @@ const App = () => {
 
   const createBlog = (newBlog) => {
 
-    console.log('createBlog: '+ newBlog)
-
     const loggedUserJSON = window.localStorage.getItem('BlogUser')
     if (loggedUserJSON) {
 
@@ -173,12 +171,14 @@ const App = () => {
       <div>
         {!blogAddForm && <Button text='add blog' handleClick={addBlogClicked} />}
         {blogAddForm && <NewBlogForm createBlog={createBlog} setBlogAddForm={setBlogAddForm} />}
-        {blogs.sort((a,b) => { return b.likes - a.likes }).map(blog => {
-          if (blog.user.name === user) {
-            return (<Blog key={blog.id} blog={blog} likeBlog={() => likeBlog(blog)} deleteBlog={() => deleteBlog(blog)} />)
+        <div id='blogs'>
+          {blogs.sort((a,b) => { return b.likes - a.likes }).map(blog => {
+            if (blog.user.name === user) {
+              return (<Blog key={blog.id} blog={blog} likeBlog={() => likeBlog(blog)} deleteBlog={() => deleteBlog(blog)} />)
+            }
           }
-        }
-        )}
+          )}
+        </div>
       </div>
     )
   }
