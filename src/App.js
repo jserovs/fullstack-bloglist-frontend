@@ -11,14 +11,27 @@ import { addBlog } from './reducers/blogsReducer'
 import { logIn, logOut } from './reducers/userReducer'
 import LoginForm from './components/LoginForm'
 import UserListing from './components/UserListing'
+import UserDetails from './components/UserDetails'
+import userService from './services/users'
 
 import {
   BrowserRouter as Router,
-  Switch, Route
+  Switch, Route, Link
 } from "react-router-dom"
+import { Navbar, Nav, ListGroup } from 'react-bootstrap'
 
 const App = () => {
-  // const [blogs, setBlogs] = useState([])
+
+  const [users, setUsers] = useState([])
+
+
+  useEffect(() => {
+    userService.getAll().then((res) => {
+      setUsers(res)
+    }
+    )
+
+  }, [])
 
   //implementing redux
   const dispatch = useDispatch()
@@ -60,32 +73,48 @@ const App = () => {
 
   const blogList = () => {
     return (
-      <div>
-        {!blogAddForm && <Button text='add blog' handleClick={showAddBlogClicked} />}
+      <div>        
         {blogAddForm && <NewBlogForm createBlog={createBlog} setBlogAddForm={setBlogAddForm} />}
-        <div id='blogs'>
+        <ListGroup>
           {reduxBlogs.sort((a, b) => { return b.likes - a.likes }).map(blog => {
             if (blog.user.name === reduxUser.name) {
-              return (<Blog key={blog.id} blog={blog} loginToken={reduxUser.token} />)
+              return (<ListGroup.Item action variant="light" href={'/blogs/'+blog.id}>
+                {/* <div key={blog.id}><Link to={'/blogs/'+blog.id}> */}
+                  {blog.title}s
+                  {/* </Link></div> */}
+                </ListGroup.Item> )
             }
           })}
-        </div>
+        </ListGroup>
+        {!blogAddForm && <Button size='lg' variant='secondary' text='add blog' handleClick={showAddBlogClicked} />}
       </div>
     )
   }
 
   return (
     <Router>
+
       <div className="container">
+
         <h1>blogs</h1>
         <MessageBox />
         {reduxUser === null ?
           <LoginForm /> :
-          <div>{reduxUser.name} is logged!!! <Button text='logout' handleClick={signOut} /></div>
+          <Navbar bg='light'>
+            <Nav.Link href="/blogs">Blogs</Nav.Link>
+            <Nav.Link href="/users">Users</Nav.Link>
+            <div>{reduxUser.name} is logged!!! <Button size='sm' text='logout' variant='danger'  onClick={signOut} /></div>
+          </Navbar>
         }
         <Switch>
+          <Route path="/blogs/:id">
+            <Blog/>
+          </Route>
+          <Route path="/users/:id">
+            <UserDetails users={users} />
+          </Route>
           <Route path="/users">
-            {reduxUser !== null && <UserListing />}
+            {reduxUser !== null && <UserListing users={users} />}
           </Route>
           <Route>
             {reduxUser !== null && blogList()}

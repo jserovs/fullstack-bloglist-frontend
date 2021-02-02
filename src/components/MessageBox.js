@@ -1,13 +1,20 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { Alert } from 'react-bootstrap'
 
 const MessageBox = () => {
 
   const notification = useSelector(state => state.notifications, () => {})
 
+  if (!notification) {
+    return
+  }
+
   return (
-    <div id='messageBox' className={notification.style}>
-      <b>{notification.text}</b>
+    <div className="container">
+      {(notification && 
+        <Alert variant={notification.style}>{notification.text}</Alert>
+      )}
     </div>
   )
 }
